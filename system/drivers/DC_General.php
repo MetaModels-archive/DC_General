@@ -415,22 +415,13 @@ class DC_General extends DataContainer implements editable, listable
 	protected function loadController()
 	{
 		// Load controller
-		if (isset($this->arrDCA['dca_config']['controller']) && isset($this->arrDCA['dca_config']['controller_config']))
-		{
-			$arrConfig = $this->arrDCA['dca_config']['controller_config'];
-			$this->objController = new $this->arrDCA['dca_config']['controller']();
-		}
-		else if (isset($this->arrDCA['dca_config']['controller']) && !isset($this->arrDCA['dca_config']['controller_config']))
-		{
-			$arrConfig = array();
-			$this->objController = new $this->arrDCA['dca_config']['controller']();
-		}
-		else
-		{
-			$arrConfig = array();
-			$this->objController = new GeneralControllerDefault();
-		}
-
+		$strImpl = $this->arrDCA['dca_config']['controller']
+			? $this->arrDCA['dca_config']['controller']
+			: 'GeneralControllerDefault';
+		
+		$arrConfig = (array) $this->arrDCA['dca_config']['controller_config'];
+		
+		$this->objController = new $strImpl($arrConfig);
 		$this->objController->setDC($this);
 	}
 
@@ -441,22 +432,13 @@ class DC_General extends DataContainer implements editable, listable
 	protected function loadView()
 	{
 		// Load view
-		if (isset($this->arrDCA['dca_config']['view']) && isset($this->arrDCA['dca_config']['view_config']))
-		{
-			$arrConfig = $this->arrDCA['dca_config']['view_config'];
-			$this->objViewHandler = new $this->arrDCA['dca_config']['view']();
-		}
-		else if (isset($this->arrDCA['dca_config']['view']) && !isset($this->arrDCA['dca_config']['view_config']))
-		{
-			$arrConfig = array();
-			$this->objViewHandler = new $this->arrDCA['dca_config']['view']();
-		}
-		else
-		{
-			$arrConfig = array();
-			$this->objViewHandler = new GeneralViewDefault();
-		}
-
+		$strImpl = $this->arrDCA['dca_config']['view']
+			? $this->arrDCA['dca_config']['view']
+			: 'GeneralViewDefault';
+		
+		$arrConfig = (array) $this->arrDCA['dca_config']['view_config'];
+		
+		$this->objViewHandler = new $strImpl($arrConfig);
 		$this->objViewHandler->setDC($this);
 	}
 
