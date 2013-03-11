@@ -267,19 +267,19 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 	protected function establishSorting()
 	{
 		// Get sorting fields
-		$arrSortingFields		= array();
+		$arrSortingFields = array();
 		foreach ($this->getDC()->arrDCA['fields'] as $k => $v)
 		{
 			if ($v['sorting'])
 			{
 				if (is_null($v['flag']))
-                {
-                    $arrSortingFields[$k] = DCGE::MODEL_SORTING_ASC;
-                }
-                else
-                {
-                    $arrSortingFields[$k] = $v['flag'] % 2 ? DCGE::MODEL_SORTING_ASC : DCGE::MODEL_SORTING_DESC;
-                }
+				{
+					$arrSortingFields[$k] = DCGE::MODEL_SORTING_ASC;
+				}
+				else
+				{
+					$arrSortingFields[$k] = $v['flag'] % 2 ? DCGE::MODEL_SORTING_ASC : DCGE::MODEL_SORTING_DESC;
+				}
 			}
 		}
 		$this->getDC()->setSorting(array_keys($arrSortingFields));
@@ -297,20 +297,20 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 		$arrSorting				 = (array) $this->getDC()->arrDCA['list']['sorting']['fields'];
 		$strFirstSorting		 = preg_replace('/\s+.*$/i', '', strval($arrSorting[0]));
 		
-        if (is_null($v['flag']))
-        {
-            $strFirstSortingOrder = DCGE::MODEL_SORTING_ASC;
-        }
-        else
-        {
-            $strFirstSortingOrder = $this->getDC()->arrDCA['list']['sorting']['flag'] % 2 ? DCGE::MODEL_SORTING_ASC : DCGE::MODEL_SORTING_DESC;
-        }
-
-        if (!strlen($strFirstSorting))
+		if (is_null($v['flag']))
 		{
-			foreach(array('sorting', 'tstamp', 'pid', 'id') as $strField)
+			$strFirstSortingOrder = DCGE::MODEL_SORTING_ASC;
+		}
+		else
+		{
+			$strFirstSortingOrder = $this->getDC()->arrDCA['list']['sorting']['flag'] % 2 ? DCGE::MODEL_SORTING_ASC : DCGE::MODEL_SORTING_DESC;
+		}
+
+		if (!strlen($strFirstSorting))
+		{
+			foreach (array('sorting', 'tstamp', 'pid', 'id') as $strField)
 			{
-				if($this->getDC()->getDataProvider()->fieldExists($strField))
+				if ($this->getDC()->getDataProvider()->fieldExists($strField))
 				{
 					$strFirstSorting = $strField;
 					break;
