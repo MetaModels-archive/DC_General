@@ -807,6 +807,7 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 			}
 
 			$objDBModel->setProperty('pid', $this->Input->get('pid'));
+			$this->getNewPosition($objCurrentDataProvider, null, $objDBModel, null, null, 'create');
 		}
 		else if ($this->getDC()->arrDCA['list']['sorting']['mode'] == 5 && $this->Input->get('mode') != '')
 		{
@@ -1599,26 +1600,19 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 		}
 		else if ($strMode == 'create')
 		{
-//			// Default - Add to end off all
-//			// Search for the highest sorting
-//			$objConfig = $objCDP->getEmptyConfig();
-//			$objConfig->setFields(array('sorting'));
-//			$arrCollection = $objCDP->fetchAll($objConfig);
-//
-//			foreach ($arrCollection as $value)
-//			{
-//				if ($value->getProperty('sorting') > $intHigestSorting)
-//				{
-//					$intHigestSorting = $value->getProperty('sorting');
-//				}
-//			}
-//
-//			$intNextSorting = $intHigestSorting + 128;
-//
-//			// Set new Sorting
-//			$objDBModel->setProperty('sorting', $intNextSorting);
-//
-//			return;
+			// Default - Add to end off all
+			// Search for the highest sorting
+			$objConfig = $objCDP->getEmptyConfig();
+			$objConfig->setFields(array('sorting'));
+			$objConfig->setSorting(array('sorting' => DCGE::MODEL_SORTING_DESC));
+			$objConfig->setAmount(1);
+			// TODO probably filter for pid in parent modes (4, 5, 6)
+
+			$objCollection = $objCDP->fetchAll($objConfig);
+			$objCollection->length() && $intHighestSorting = $objCollection->get(0)->getProperty('sorting') + 256;
+			$objDBModel->setProperty('sorting', $intHighestSorting);
+
+			return;
 		}
 
 		return;
