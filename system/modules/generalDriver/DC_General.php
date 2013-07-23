@@ -1352,8 +1352,16 @@ class DC_General extends DataContainer implements editable, listable
 			$varNewValue = $this->processInput($strKey);
 			if (($varNewValue !== NULL) && ($this->objCurrentModel->getProperty($strKey) !== $varNewValue))
 			{
-				$this->objCurrentModel->setProperty($strKey, $varNewValue);
-				$this->objCurrentModel->setMeta(DCGE::MODEL_IS_CHANGED, true);
+				try
+				{
+					$this->objCurrentModel->setProperty($strKey, $varNewValue);
+					$this->objCurrentModel->setMeta(DCGE::MODEL_IS_CHANGED, true);
+				}
+				catch (Exception $exception)
+				{
+					$this->blnNoReload = true;
+					$this->arrWidgets[$strKey]->addError($exception->getMessage());
+				}
 			}
 		}
 
