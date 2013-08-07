@@ -3039,12 +3039,27 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 						}
 						else
 						{
-							$options[$objModel->getProperty($field)] = date('Y-m', $objModel->getProperty($field));
-							$intMonth = (date('m', $objModel->getProperty($field)) - 1);
+							$date = $objModel->getProperty($field);
+							if ($date instanceof DateTime)
+							{
+								$key      = $date->getTimestamp();
+								$intMonth = $date->format('m') - 1;
+								$year     = $date->format('Y');
+								$date     = $date->format('Y-m');
+							}
+							else
+							{
+								$key      = $date;
+								$intMonth = date('m', $date) - 1;
+								$year     = date('Y', $date);
+								$date     = date('Y-m', $date);
+							}
+
+							$options[$key] = $date;
 
 							if (isset($GLOBALS['TL_LANG']['MONTHS'][$intMonth]))
 							{
-								$options[$objModel->getProperty($field)] = $GLOBALS['TL_LANG']['MONTHS'][$intMonth] . ' ' . date('Y', $objModel->getProperty($field));
+								$options[$key] = $GLOBALS['TL_LANG']['MONTHS'][$intMonth] . ' ' . $year;
 							}
 						}
 
