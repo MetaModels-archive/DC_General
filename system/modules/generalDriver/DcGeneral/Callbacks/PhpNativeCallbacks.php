@@ -459,7 +459,36 @@ class PhpNativeCallbacks extends \System implements CallbacksInterface
 			}
 		}
 	}
+	
+	/**
+	 * Call the onsave_callback
+	 *
+	 * @param InterfaceGeneralModelInterface $objModel The model that has been updated.
+	 *
+	 * @return void
+	 */
+	public function onsaveCallback($objModel)
+	{
+		// Load DCA
+		$arrDCA = $this->getDC()->getDCA();
 
+		// Call the oncreate_callback
+		if (is_array($arrDCA['config']['onsave_callback']))
+		{
+			foreach ($arrDCA['config']['onsave_callback'] as $callback)
+			{
+				if (is_callable($callback))
+				{
+					call_user_func(
+						$callback,
+						$objModel,
+						$this->getDC()
+					);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * {@inheritdoc}
 	 */
