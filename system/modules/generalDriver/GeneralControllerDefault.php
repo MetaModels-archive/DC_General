@@ -2390,11 +2390,11 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 			{
 				if ($this->Input->post($field, true) != 'tl_' . $field)
 				{
-					$arrSession['filter'][$strFilter][$field] = $this->Input->post($field, true);
+					$arrSession['filter'][$this->getDC()->getTable()][$field] = $this->Input->post($field, true);
 				}
 				else
 				{
-					unset($arrSession['filter'][$strFilter][$field]);
+					unset($arrSession['filter'][$this->getDC()->getTable()][$field]);
 				}
 			}
 
