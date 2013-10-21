@@ -294,7 +294,7 @@ class DC_General extends \DataContainer implements DataContainerInterface
 		// Therefore we have to check if the passed argument is indeed a valid DCA.
 		if ($arrDCA != null && $arrDCA['config'])
 		{
-			$this->arrDCA = $arrDCA;
+			$this->arrDCA = &$arrDCA;
 		}
 		else
 		{
