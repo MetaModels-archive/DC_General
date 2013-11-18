@@ -251,7 +251,7 @@ class DefaultController extends \Controller implements ControllerInterface
 		$objDataProvider = $this->getDC()->getDataProvider();
 
 		// Check if current dataprovider supports multilanguage
-		if (in_array('DcGeneral\Data\MultiLanguageDriverInterface', class_implements($objDataProvider))) 
+		if (in_array('DcGeneral\Data\MultiLanguageDriverInterface', class_implements($objDataProvider)))
 		{
 			$objLanguagesSupported = $this->getDC()->getDataProvider()->getLanguages($intID);
 		}
@@ -259,7 +259,7 @@ class DefaultController extends \Controller implements ControllerInterface
 		{
 			trigger_error('deprecated use of InterfaceGeneralDataMultiLanguage - use DcGeneral\Data\MultiLanguageDriverInterface instead.', E_USER_DEPRECATED);
 			$objLanguagesSupported = $this->getDC()->getDataProvider()->getLanguages($intID);
-		} 
+		}
 		else
 		{
 			$objLanguagesSupported = null;
@@ -439,7 +439,7 @@ class DefaultController extends \Controller implements ControllerInterface
 				$arrIgnored	 = array($id);
 				$objModel	 = $this->getDC()->getDataProvider()->getEmptyModel();
 				$objContainedId = trimsplit(',', $objInput->getParameter('childs'));
-					
+
 				// Set clipboard.
 				$objClipboard
 						->clear()
@@ -920,7 +920,7 @@ class DefaultController extends \Controller implements ControllerInterface
 					->clear()
 					->saveTo($this->getEnvironment());
 		}
-		try 
+		try
 		{
 			// Check if we have a auto submit
 			$this->getDC()->updateModelFromPOST();
@@ -1066,12 +1066,12 @@ class DefaultController extends \Controller implements ControllerInterface
 
 		// Callback
 		$this->getEnvironment()->setCurrentModel($objCurrentDataProvider->fetch($objCurrentDataProvider->getEmptyConfig()->setId($intRecordID)));
-		
+
 		if($this->getEnvironment()->getCurrentModel() == null)
 		{
 			$this->redirectHome();
 		}
-		
+
 		$this->getEnvironment()->getCallbackHandler()->ondeleteCallback();
 
 		$arrDelIDs = array();
@@ -2030,7 +2030,6 @@ class DefaultController extends \Controller implements ControllerInterface
 	{
 		// Load some infromations from DCA
 		$arrNeededFields = $this->calcNeededFields($this->getDC()->getDataProvider()->getEmptyModel(), $this->getDC()->getTable());
-		$arrTitlePattern = $this->calcLabelPattern($this->getDC()->getTable());
 
 		// TODO: @CS we need this to be srctable_dsttable_tree for interoperability, for mode5 this will be self_self_tree but with strTable.
 		$strToggleID = $this->getDC()->getTable() . '_tree';
