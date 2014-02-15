@@ -13,6 +13,7 @@
 namespace DcGeneral\Callbacks;
 
 use DcGeneral\Data\ModelInterface;
+use DcGeneral\DataDefinition\OperationInterface;
 
 class PhpNativeCallbacks extends \System implements CallbacksInterface
 {
@@ -115,16 +116,30 @@ class PhpNativeCallbacks extends \System implements CallbacksInterface
 	 */
 	public function buttonCallback($objModelRow, $arrOperation, $strLabel, $strTitle, $arrAttributes, $strTable, $arrRootIds, $arrChildRecordIds, $blnCircularReference, $strPrevious, $strNext)
 	{
+		if ($arrOperation instanceof OperationInterface)
+		{
+			/** @var \DcGeneral\DataDefinition\OperationInterface $arrOperation */
+			$strHref     = $arrOperation->getHref();
+			$strIcon     = $arrOperation->getIcon();
+			$arrCallback = $arrOperation->getCallback();
+		}
+		else
+		{
+			$strHref     = $arrOperation['href'];
+			$strIcon     = $arrOperation['icon'];
+			$arrCallback = $arrOperation['button_callback'];
+		}
+
 		// Check Callback
-		if (is_callable($arrOperation['button_callback']))
+		if (is_callable($arrCallback))
 		{
 			return call_user_func(
-				$arrOperation['button_callback'],
+				$arrCallback,
 				$objModelRow,
-				$arrOperation['href'],
+				$strHref,
 				$strLabel,
 				$strTitle,
-				$arrOperation['icon'],
+				$strIcon,
 				$arrAttributes,
 				$strTable,
 				$arrRootIds,
