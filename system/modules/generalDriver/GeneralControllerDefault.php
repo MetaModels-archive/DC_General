@@ -1681,7 +1681,7 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 			$objCDP = $this->getDC()->getDataProvider();
 		}
 
-		if ($mixAfter === DCGE::INSERT_AFTER_START) 
+		if ($mixAfter === DCGE::INSERT_AFTER_START)
 		{
 			$mixAfter = 0;
 		}
@@ -2452,6 +2452,7 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 	 * Reload the Website.
 	 *
 	 * @return void
+	 * @todo The part with tl_filters123 seems to be obsolete.
 	 */
 	protected function checkPanelSubmit()
 	{
@@ -2506,12 +2507,22 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 			{
 				if ($this->Input->post($field, true) != 'tl_' . $field)
 				{
-					$arrSession['filter'][$strFilter][$field] = $this->Input->post($field, true);
+					$arrSession['filter'][$this->getDC()->getTable()][$field] = $this->Input->post($field, true);
 				}
 				else
 				{
-					unset($arrSession['filter'][$strFilter][$field]);
+					unset($arrSession['filter'][$this->getDC()->getTable()][$field]);
 				}
+			}
+
+			// Store search value and specified field in the current session
+			$arrSession['search'][$this->getDC()->getTable()]['field'] = $this->Input->post('tl_field', true);
+
+			if (strlen($this->Input->post('tl_value')) > 0 )
+			{
+				$arrSession['search'][$this->getDC()->getTable()]['value'] = $this->Input->postRaw('tl_value');
+			} else {
+				$arrSession['search'][$this->getDC()->getTable()]['value'] = '';
 			}
 
 			$this->Session->setData($arrSession);
@@ -3028,6 +3039,19 @@ class GeneralControllerDefault extends Controller implements InterfaceGeneralCon
 					);
 				}
 			}
+		}
+
+		if ($arrSession['search'][$this->getDC()->getTable()]['value'] != '')
+		{
+			$this->getDC()->setFilter(
+				array(
+					array(
+						'operation' => 'LIKE',
+						'property'  => $arrSession['search'][$this->getDC()->getTable()]['field'],
+						'value'     => sprintf('*%s*', $arrSession['search'][$this->getDC()->getTable()]['value'])
+					)
+				)
+			);
 		}
 
 		return $arrSession;
