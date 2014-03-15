@@ -868,16 +868,16 @@ class DefaultView implements ViewInterface
 			// TODO: @CS we definately need into and after handling here instead of different modes.
 			$imagePasteInto = BackendBindings::generateImage('pasteinto.gif', $GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0], 'class="blink"');
 			$strUrl = BackendBindings::addToUrl(sprintf("act=%s&amp;mode=2&amp;after=0&amp;pid=0&amp;id=%s&amp;childs=%s",
-				$objClipboard->getMode(),
-				$arrContainId[0],
-				implode(',', $arrChilds)
-			));
+						$objClipboard->getMode(),
+						$arrContainId[0],
+						implode(',', $arrChilds)
+					));
 
 			$strRootPasteinto = sprintf('<a href="%s" title="%s" onclick="Backend.getScrollOffset()">%s</a> ',
-				$strUrl,
-				specialchars($GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0]),
-				$imagePasteInto
-			);
+						$strUrl,
+						specialchars($GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0]),
+						$imagePasteInto
+					);
 
 			//$strRootPasteinto = '<a href="' . BackendBindings::addToUrl('act=' . $objClipboard->getMode() . '&amp;mode=2&amp;after=0&amp;pid=0&amp;id=' . $arrContainId[0] . '&amp;childs=' . implode(',', $arrChilds)) . '" title="' . specialchars($GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0]) . '" onclick="Backend.getScrollOffset()">' . $imagePasteInto . '</a> ';
 			//($row, $table, $cr, $childs, $previous, $next);
@@ -1914,9 +1914,9 @@ class DefaultView implements ViewInterface
 
 			// Call a custom function instead of using the default button
 			$strButtonCallback = $this->getDC()
-				->getEnvironment()
-				->getCallbackHandler()
-				->buttonCallback($objModelRow, $objOperation, $label, $title, $attributes, $strTable, $arrRootIds, $arrChildRecordIds, $blnCircularReference, $strPrevious, $strNext);
+					->getEnvironment()
+					->getCallbackHandler()
+					->buttonCallback($objModelRow, $objOperation, $label, $title, $attributes, $strTable, $arrRootIds, $arrChildRecordIds, $blnCircularReference, $strPrevious, $strNext);
 
 			if (!is_null($strButtonCallback))
 			{
