@@ -539,7 +539,7 @@ class DefaultView implements ViewInterface
 
 		$objTemplate->pasteNew = array(
 			'content' => BackendBindings::generateImage('new.gif', $GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteafter'][0]),
-			'href' => BackendBindings::addToUrl('act=create&amp;mode=2&amp;pid=' . $this->getDC()->getCurrentParentCollection()->get(0)->getID() . '&amp;id=' . $this->intId),
+			'href' => str_replace('&amp;id=', '', BackendBindings::addToUrl('act=create&amp;mode=2&amp;pid=' . $this->getDC()->getCurrentParentCollection()->get(0)->getID() . '&amp;id=' . $this->intId)),
 			'title' => specialchars($GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pastenew'][0])
 		);
 
@@ -864,25 +864,25 @@ class DefaultView implements ViewInterface
 			$objClipboard = $this->getEnvironment()->getClipboard();
 			$arrContainId = $objClipboard->getContainedIds();
 			$arrChilds = (count($arrContainId) > 1) ? array_slice($arrContainId, 1, count($arrContainId) - 1 ) : array();
-			
+
 			// TODO: @CS we definately need into and after handling here instead of different modes.
-			$imagePasteInto = BackendBindings::generateImage('pasteinto.gif', $GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0], 'class="blink"');			
-			$strUrl = BackendBindings::addToUrl(sprintf("act=%s&amp;mode=2&amp;after=0&amp;pid=0&amp;id=%s&amp;childs=%s", 
-						$objClipboard->getMode(), 
-						$arrContainId[0],
-						implode(',', $arrChilds)
-					));
-			
-			$strRootPasteinto = sprintf('<a href="%s" title="%s" onclick="Backend.getScrollOffset()">%s</a> ', 
-						$strUrl,
-						specialchars($GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0]),
-						$imagePasteInto
-					);
-			
+			$imagePasteInto = BackendBindings::generateImage('pasteinto.gif', $GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0], 'class="blink"');
+			$strUrl = BackendBindings::addToUrl(sprintf("act=%s&amp;mode=2&amp;after=0&amp;pid=0&amp;id=%s&amp;childs=%s",
+				$objClipboard->getMode(),
+				$arrContainId[0],
+				implode(',', $arrChilds)
+			));
+
+			$strRootPasteinto = sprintf('<a href="%s" title="%s" onclick="Backend.getScrollOffset()">%s</a> ',
+				$strUrl,
+				specialchars($GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0]),
+				$imagePasteInto
+			);
+
 			//$strRootPasteinto = '<a href="' . BackendBindings::addToUrl('act=' . $objClipboard->getMode() . '&amp;mode=2&amp;after=0&amp;pid=0&amp;id=' . $arrContainId[0] . '&amp;childs=' . implode(',', $arrChilds)) . '" title="' . specialchars($GLOBALS['TL_LANG'][$this->getDC()->getTable()]['pasteinto'][0]) . '" onclick="Backend.getScrollOffset()">' . $imagePasteInto . '</a> ';
 			//($row, $table, $cr, $childs, $previous, $next);
 			// Callback for paste btn.
-			$strButtonCallback = $this->getDC()->getCallbackClass()->pasteButtonCallback(				
+			$strButtonCallback = $this->getDC()->getCallbackClass()->pasteButtonCallback(
 				$this->getDC()->getDataProvider($this->getDC()->getTable())->getEmptyModel()->getPropertiesAsArray(),
 				$this->getDC()->getTable(),
 				false,
@@ -1656,6 +1656,7 @@ class DefaultView implements ViewInterface
 							$strHref = '&amp;mode=2';
 						}
 						$strHref = BackendBindings::addToUrl($strHref . '&amp;id=&amp;act=create&amp;pid=' . $this->getDC()->getId());
+						$strHref = str_replace('&amp;id=', '', $strHref);
 					}
 					else
 					{
@@ -1913,9 +1914,9 @@ class DefaultView implements ViewInterface
 
 			// Call a custom function instead of using the default button
 			$strButtonCallback = $this->getDC()
-					->getEnvironment()
-					->getCallbackHandler()
-					->buttonCallback($objModelRow, $objOperation, $label, $title, $attributes, $strTable, $arrRootIds, $arrChildRecordIds, $blnCircularReference, $strPrevious, $strNext);
+				->getEnvironment()
+				->getCallbackHandler()
+				->buttonCallback($objModelRow, $objOperation, $label, $title, $attributes, $strTable, $arrRootIds, $arrChildRecordIds, $blnCircularReference, $strPrevious, $strNext);
 
 			if (!is_null($strButtonCallback))
 			{
