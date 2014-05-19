@@ -137,14 +137,14 @@ class DefaultLimitElement extends AbstractElement implements LimitElementInterfa
 				$objTempConfig
 			);
 
-			$arrTotal = $this
+			$mixTotal = $this
 				->getPanel()
 				->getContainer()
 				->getDataContainer()
 				->getDataProvider()
 				->fetchAll($objTempConfig->setIdOnly(true));
 
-			$this->intTotal = $arrTotal ? count($arrTotal) : 0;
+			$this->intTotal = is_array($mixTotal) ? count($mixTotal) : (is_object($mixTotal) ? $mixTotal->length() : 0);
 			$offset = 0;
 			// TODO: we need to determine the perPage some better way.
 			$amount = $GLOBALS['TL_CONFIG']['resultsPerPage'];
