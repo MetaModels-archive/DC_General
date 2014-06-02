@@ -2468,6 +2468,7 @@ class DefaultController extends \Controller implements ControllerInterface
 	 * Reload the Website.
 	 *
 	 * @return void
+	 * @todo The part with tl_filters123 seems to be obsolete.
 	 */
 	protected function checkPanelSubmit()
 	{
