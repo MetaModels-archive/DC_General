@@ -653,10 +653,13 @@ class DC_General extends \DataContainer implements DataContainerInterface
 			case 'configuration':
 			case 'config':
 				return $this->arrDCA;
+				
+			// Useless, but we still need this for contao and the filetrees.
+			case 'activeRecord':
+				return $this->getEnvironment()->getCurrentModel()->getPropertiesAsArray();
 
 			// DataContainer overwrite
 			case 'palette':
-			case 'activeRecord':
 				throw new \RuntimeException("Unsupported getter function for '$name' in DC_General.");
 		}
 		// allow importing of objects in Contao 3.
